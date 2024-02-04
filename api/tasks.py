@@ -1,20 +1,17 @@
-# api/tasks.py
-
 from celery import shared_task
-from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from api.models import Event
 from twilio.rest import Client
-from .utils import send_sms
 from decouple import config
-
+from .constants import EVENT_MESSAGES as event_messages
+ 
 
 @shared_task
 def send_event_notification(event_id,request_type):
     print("event recived")
     if request_type=="DELETE":
         try:
-            
+            # if the event is deleted means we are not able to query db so passed the Details as a dict
             users_with_mobile_numbers = get_user_model().objects.exclude(phone_number__isnull=True)
             # Send SMS notifications to each user
             for user in users_with_mobile_numbers:
@@ -46,10 +43,25 @@ def send_sms_notification(phone_number, event_title,event_date,event_time,event_
     twilio_phone_number = config('TWILIO_PHONE_NUMBER')
 
     client = Client(twilio_account_sid, twilio_auth_token)
-    print("The EVENT_ID",{event_title})
-    event_create_message_body = f"\nNew event: {event_title}\nHappening on\t{event_date} at {event_time}\nLocation :{event_location}\n\nTeam Local Evento"
-    event_update_message_body = f"\n {event_title} Updated!!!!\nHappening on\t{event_date} at {event_time}\nLocation :{event_location}\n\nTeam Local Evento"
-    event_cancel_message_body = f"\n{event_title} Got Cancelled \n Sorry for the inconvenience\n\nTeam Local Evento"
+
+    event_create_message_body = event_messages.get('create', '').format(
+        event_title=event_title,
+        event_date=event_date,
+        event_time=event_time,
+        event_location=event_location
+    )
+    event_update_message_body = event_messages.get('update', '').format(
+        event_title=event_title,
+        event_date=event_date,
+        event_time=event_time,
+        event_location=event_location
+    )
+    event_cancel_message_body = event_messages.get('cancel', '').format(
+        event_title=event_title,
+        event_date=event_date,
+        event_time=event_time,
+        event_location=event_location
+    )
     if request_type == "POST":
         try:
             message = client.messages.create(
@@ -69,7 +81,7 @@ def send_sms_notification(phone_number, event_title,event_date,event_time,event_
             )
             print(f"Event Updated SMS sent to {phone_number} successfully! SID: {message.sid}")
         except Exception as e:
-            print(f"Failed to send SMS to {phone_number}. Error: {str(e)}")
+            print(f"Failed to send updated SMS to {phone_number}. Error: {str(e)}")
     elif request_type=="DELETE":
         try:
             message = client.messages.create(

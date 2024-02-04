@@ -1,5 +1,3 @@
-# api/views.py
-
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -68,7 +66,7 @@ def event_list(request, pk=None):
             "time": event.time,
             "location": event.location
         }
-        print(event_details)
+        
         event.delete()
 
         # Asynchronously send event notification email using Celery

@@ -72,3 +72,201 @@ Now we are ready to run our project
     cd events_platform
     python3 manage.py runserver # for Ubuntu or IOS
     python manage.py runserver # for Windows
+
+# API documentation
+
+Welcome to the Local Event Platform API documentation. This guide provides information on how to interact with the API endpoints to manage events.
+
+### Registration/Sign UP
+
+### Request
+
+- **Method:** POST
+- **URL:** `http://localhost:8000/api/register/`
+- **Headers:** No specific headers are required.
+- **Body:**
+
+  ```
+  {
+  "username": "testuser",
+  "email": "usertest@gmail.com",
+  "password": "Test@12345",
+  "phone_number":"+919188292137"
+  }
+  ```
+
+### Response
+
+    Status Code: 201 Created
+    Response Body:
+    {
+    "refresh": "Your refresh token",
+    "access": "your Access token"
+    }
+
+### Login/Sign In
+
+### Request
+
+- **Method:** POST
+- **URL:** `http://localhost:8000/api/login/`
+- **Headers:** No specific headers are required.
+- **Body:**
+
+  ```
+  {
+  "username": "your_username",
+  "password": "your_password"
+  }
+  ```
+
+### Response
+
+    Status Code: 201 Created
+    Response Body:
+    {
+    "refresh": "your_refresh_token",
+    "access": "your_access_token"
+    }
+
+### Refresh Token
+
+### Request
+
+- **Method:** POST
+- **URL:** `http://localhost:8000/api/refresh-token/`
+- **Headers:** No specific headers are required.
+- **Body:**
+
+  ```
+  {
+  "refresh_token": "your_refresh_token"
+  }
+  ```
+
+### Response
+
+    Status Code: 201 Created
+    Response Body:
+    {
+     "access": "your_new_access_token"
+    }
+
+### Event List
+
+### Request
+
+- **Method:** GET
+- **URL:** `http://localhost:8000/api/events/`
+- **Headers:** Authorization: Bearer your_access_token
+
+### Response
+
+    Status Code: 201 Created
+    Response Body:
+    [
+    {
+    "id": 1,
+    "event_title": "Event Title 1",
+    "event_date": "YYYY-MM-DD",
+    "event_time": "HH:MM",
+    "event_location": "Event Location 1",
+    "description": "Event Description 1",
+    "creator": "your_username"
+    },
+    {
+    "id": 2,
+    "event_title": "Event Title 2",
+    "event_date": "YYYY-MM-DD",
+    "event_time": "HH:MM",
+    "event_location": "Event Location 2",
+    "description": "Event Description 2",
+    "creator": "your_username"
+    }
+
+// ... other events
+]
+
+### CreateEvent
+
+### Request
+
+- **Method:** POST
+- **URL:** `http://localhost:8000/api/events/`
+- **Headers:** Authorization: Bearer your_access_token
+- **Body:**
+
+  ```
+  {
+  "event_title": "New Event Title",
+  "event_date": "YYYY-MM-DD",
+  "event_time": "HH:MM:SS",
+  "event_location": "New Event Location",
+  "description": "New Event Description"
+  }
+
+  ```
+
+### Response
+
+    Status Code: 201 Created
+    Response Body:
+    {
+    "id": 1,
+    "event_title": "New Event Title",
+    "event_date": "YYYY-MM-DD",
+    "event_time": "HH:MM:SS",
+    "event_location": "New Event Location",
+    "description": "New Event Description",
+    "creator": "your_username"
+    }
+
+### UpdateEvent
+
+### Request
+
+- **Method:** PUT
+- **URL:** `http://localhost:8000/api/events/1/` (Replace 1 with the actual event ID)
+- **Headers:** Authorization: Bearer your_access_token
+- **Body:**
+
+  ```
+  {
+  "event_title": "New Event Title",
+  "event_date": "YYYY-MM-DD",
+  "event_time": "HH:MM:SS",
+  "event_location": "New Event Location",
+  "description": "New Event Description"
+  }
+
+  ```
+
+### Response
+
+    Status Code: 200 OK
+    Response Body:
+    {
+    "id": 1,
+    "event_title": "New Event Title",
+    "event_date": "YYYY-MM-DD",
+    "event_time": "HH:MM:SS",
+    "event_location": "New Event Location",
+    "description": "New Event Description",
+    "creator": "your_username"
+    }
+
+### CancelEvent
+
+### Request
+
+- **Method:** PUT
+- **URL:** `http://localhost:8000/api/events/1/` (Replace 1 with the actual event ID)
+- **Headers:** Authorization: Bearer your_access_token
+
+### Response
+
+    Status Code: 204 No Content
+    Response Body:
+    {
+    message: Event Cancelled Successfully.
+    }

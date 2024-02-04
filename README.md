@@ -44,13 +44,31 @@ clone the repo and install the required packages.
 # Example commands
 git https://github.com/abin-m/local_event_platform.git
 cd local_event_platform
+
+virtualenv venv
+source venv/bin/activate # Activating Virtual environment
+
 pip install -r requirements.txt
 ```
 
 #### Create an Account in Twilio and obtain the below details
 
-    -TWILIO_ACCOUNT_SID= your_account_sid
-    -TWILIO_AUTH_TOKEN= your_auth_token
-    -TWILIO_PHONE_NUMBER=your_twilio_phone_number
+    TWILIO_ACCOUNT_SID= your_account_sid
+    TWILIO_AUTH_TOKEN= your_auth_token
+    TWILIO_PHONE_NUMBER=your_twilio_phone_number
 
 create a new .env file in root folder and add the above details
+
+#### Run the celery
+
+Befor that make sure that Reddis is running by entering the follwoing command.
+
+    redis-cli ping
+    # it will return PONG
+    celery -A events_platform.celery worker -l info
+
+Now we are ready to run our project
+
+    cd events_platform
+    python3 manage.py runserver # for Ubuntu or IOS
+    python manage.py runserver # for Windows

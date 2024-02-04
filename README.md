@@ -2,7 +2,7 @@
 
 The Local Event Platform is a dynamic and versatile web application designed to streamline event management for local communities. Whether you're organizing meetups, workshops, or social gatherings, this platform provides a centralized space to create, update, and manage events effortlessly.
 
-# Key Features
+## Key Features
 
 - Event Creation: Easily create and publish events with details such as title, date, time, location, and description.
 
@@ -20,7 +20,7 @@ The Local Event Platform is a dynamic and versatile web application designed to 
 
 - SQLite Database: A lightweight and easy-to-use SQLite database for storing application data.
 
-# Technologies Used
+## Technologies Used
 
 - Django: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
 
@@ -35,3 +35,22 @@ The Local Event Platform is a dynamic and versatile web application designed to 
 - Redis: An open-source, in-memory data structure store used as a message broker for Celery.
 
 - SQLite: A C library that provides a lightweight, disk-based database.
+
+## Installation
+
+clone the repo and install the required packages.
+
+```bash
+# Example commands
+git https://github.com/abin-m/local_event_platform.git
+cd local_event_platform
+pip install -r requirements.txt
+```
+
+#### Create an Account in Twilio and obtain the below details
+
+    -TWILIO_ACCOUNT_SID= your_account_sid
+    -TWILIO_AUTH_TOKEN= your_auth_token
+    -TWILIO_PHONE_NUMBER=your_twilio_phone_number
+
+create a new .env file in root folder and add the above details

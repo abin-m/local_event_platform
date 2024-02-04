@@ -90,7 +90,7 @@ def event_list(request, pk=None):
             # Asynchronously send event notification email using Celery
             send_event_notification.apply_async(args=[event_details, 'DELETE'])
 
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({'message':'Event Cancelled Successfully.'},status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'error': 'You do not have permission to delete this event.'}, status=status.HTTP_403_FORBIDDEN)
 
